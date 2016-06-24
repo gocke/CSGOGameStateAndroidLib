@@ -14,8 +14,7 @@
 * Implement ServerMessageReceiver
 * Create a CSGOGameObserver Object (with the CSGOClient Server port), 
 * Start CSGOGameObserver
-* Handle calls in ServerMessageReceived, method will be changed to void, my bad
-* !!coming soon!!: You can transform the GamData into a CSGOGameState Model, for easier value access (beware, certain values might be null)
+* Receive GameData in the handy CSGOGameData format
 
 
 ```
