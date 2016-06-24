@@ -6,7 +6,7 @@
 ## Install/Run Instructions ##
 
 * Add .jar to your Project, maybe remove AppManifest.xml from it
-* Alternatively, create your own config according to: https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Game_State_Integration
+* Create your own config according to: https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Game_State_Integration
 * remember to set Permission to use Internet: <uses-permission android:name="android.permission.INTERNET"/>
 
 ## Use Instructions ##
@@ -14,8 +14,7 @@
 * Implement ServerMessageReceiver
 * Create a CSGOGameObserver Object (with the CSGOClient Server port), 
 * Start CSGOGameObserver
-* Handle calls in ServerMessageReceived, method will be changed to void, my bad
-* !!coming soon!!: You can transform the GamData into a CSGOGameState Model, for easier value access (beware, certain values might be null)
+* Receive GameData in the handy CSGOGameData format
 
 
 ```
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements ServerMessageRece
     }
 
     @Override
-    public JSONObject receiveCSGOServerMessage(JSONObject jsonObject) {
+    public void receiveCSGOServerMessage(CSGOGameData csgoGameData) {
         System.out.println(jsonObject.toString());
         return null;
     }
