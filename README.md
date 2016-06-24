@@ -8,6 +8,7 @@
 * Add .jar to your Project, maybe remove AppManifest.xml from it
 * Create your own config according to: https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Game_State_Integration
 * remember to set Permission to use Internet: <uses-permission android:name="android.permission.INTERNET"/>
+* Make sure you have org.json (included in Android)
 
 ## Use Instructions ##
 
