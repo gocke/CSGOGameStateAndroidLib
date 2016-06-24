@@ -25,6 +25,7 @@ public class CSGOGameObserver
 	{
 		try
 		{
+			@SuppressWarnings("resource")
 			ServerSocket serverSocket = new ServerSocket(ServerPort);
 			
 			while(true)
@@ -34,21 +35,22 @@ public class CSGOGameObserver
 				
 				//receive JSONObject
 				JSONObject jsonObject = StreamToJSONObject(receivedSocket.getInputStream());
-				receivedSocket.close();
-				
+								
 				//write response
 				PrintStream output = new PrintStream(receivedSocket.getOutputStream());			
 				output.println("200");
 				output.flush();
 				output.close();
 				
-				//close socket and reopen
-				serverSocket.close();
+				//close received socket
+				receivedSocket.close();
 				
-				Thread messageReceivedThread = new Thread(new OneShotTask(jsonObject, serverMessageReceiver));
+				CSGOGameState csgoGameState = new CSGOGameState(jsonObject);
+				Thread messageReceivedThread = new Thread(new OneShotTask(csgoGameState, serverMessageReceiver));
 				messageReceivedThread.start();
-			}
-		} catch (IOException e)
+			}		
+		} 
+		catch (IOException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -66,8 +68,9 @@ public class CSGOGameObserver
 			String inputStr;
 			while ((inputStr = streamReader.readLine()) != null)
 				responseStrBuilder.append(inputStr);
-
-			return new JSONObject(responseStrBuilder.toString());
+			String jsonString = responseStrBuilder.toString().substring(responseStrBuilder.toString().indexOf('{'));
+						
+			return new JSONObject(jsonString);
 	       
 		} catch (Exception e)
 		{
@@ -82,17 +85,18 @@ public class CSGOGameObserver
 class OneShotTask implements Runnable 
 {
 	ServerMessageReceiver serverMessageReceiver;
-    JSONObject jsonObject;
-    OneShotTask(JSONObject tempJSONObject, ServerMessageReceiver tempServerMessageReceiver) 
+    CSGOGameState csgoGameState;
+    
+    OneShotTask(CSGOGameState tempCSGOGameState, ServerMessageReceiver tempServerMessageReceiver) 
     { 
-    	jsonObject = tempJSONObject; 
+    	csgoGameState = tempCSGOGameState; 
     	
         serverMessageReceiver = tempServerMessageReceiver;
     }
     
     public void run() 
     {
-    	serverMessageReceiver.receiveCSGOServerMessage(jsonObject);
+    	serverMessageReceiver.receiveCSGOServerMessage(csgoGameState);
     }
 }
 
