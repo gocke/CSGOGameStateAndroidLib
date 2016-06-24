@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements ServerMessageRece
     }
 
     @Override
-    public JSONObject receiveCSGOServerMessage(JSONObject jsonObject) {
+    public void receiveCSGOServerMessage(CSGOGameData csgoGameData) {
         System.out.println(jsonObject.toString());
         return null;
     }
